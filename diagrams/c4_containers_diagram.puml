@@ -1,0 +1,34 @@
+@startuml
+title Диаграмма контейнеров кинотеатра "Кинобездна"
+
+left to right direction
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/refs/heads/master/C4_Container.puml
+
+Person(user, "Пользователь", "Ноутбуки/Смарт тв/Десктоп/Моб приложения")
+System(cinema, "Кинобездна")
+
+Container_Boundary(cinema, "Кинобездна") {
+    Container(apiGateway, "Единая точка входа для запросов", "Nginx", "Gateway для перенаправления запросов на соответствующие сервисы")
+    Container(userService, "Сервис пользователей", "Go", "Управляет пользователями, авторизацией, аутентификацией")
+    Container(movieService, "Сервис метаданных фильмов", "Go", "Хранит и обрабатывает метаданные фильмов")
+    Container(paymentService, "Сервис биллинга", "Go", "Обрабатывает платежи, хранит транзакции")
+    Container(recomendationService, "Сервис рекомендаций", "Go", "Получает события из внешней системы")
+    Container(subscriptionService, "Сервис подписок", "Go", "Обрабатывает подписки пользователей")
+    Container(messageBroker, "Брокер сообщений", "Apache Kafka", "Обеспечивает обмен данными между сервисами")
+}
+
+System_Ext(extCinemas, "Внешние кинотеатры", "Внешние кинотеатры")
+System_Ext(recomendedSystem, "Внешняя рекомендательная система", "Внешняя рекомендательная система")
+
+Rel(user, apiGateway, "Использует систему")
+Rel(apiGateway, userService, "Запрашивает профили/авторизацию")
+Rel(apiGateway, movieService, "Запрашивает данные о фиьмах")
+Rel(apiGateway, paymentService, "Запрашивает данные о транзакциях/выполняет транзакции")
+Rel(apiGateway, subscriptionService, "Запрашивает данные о подписках")
+Rel(apiGateway, recomendationService, "Запрашивает рекомендации для пользователя")
+
+Rel(recomendedSystem, messageBroker, "Отправляет события с топик")
+Rel(recomendationService, messageBroker, "Читает события и обрабатывает")
+Rel(movieService, extCinemas, "Запрашивает данные о фильмах")
+@enduml
