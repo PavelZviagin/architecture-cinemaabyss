@@ -224,7 +224,17 @@ cat .docker/config.json | base64
   Откройте логи event-service и сделайте скриншот обработки событий
 
 #### Шаг 3
-Добавьте сюда скриншота вывода при вызове https://cinemaabyss.example.com/api/movies и  скриншот вывода event-service после вызова тестов.
+
+Тесты:
+![Topics](screenshots/kuber_tests.png)
+
+Events:
+
+![Topics](screenshots/events_logs.png)
+
+Main page:
+
+![Topics](screenshots/movies_page.png)
 
 
 # Задание 4
@@ -299,6 +309,8 @@ minikube tunnel
 
 Потом вызовите 
 https://cinemaabyss.example.com/api/movies и приложите скриншот
+
+![Topics](screenshots/movies_page_helm.png)
 
 
 ## Удаляем все
